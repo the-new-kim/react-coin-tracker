@@ -172,7 +172,6 @@ function Coin() {
     }
   );
   const loading = infoLoading || tickersLoading;
-
   return (
     <Container>
       <Helmet>
