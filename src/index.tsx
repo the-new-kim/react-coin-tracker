@@ -12,12 +12,12 @@ const root = ReactDOM.createRoot(
 const queryClient = new QueryClient();
 
 root.render(
-  // <React.StrictMode>
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider theme={darkTheme}>
-      <App />
-    </ThemeProvider>
-    <ReactQueryDevtools initialIsOpen={true} />
-  </QueryClientProvider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={darkTheme}>
+        <App />
+      </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={true} />
+    </QueryClientProvider>
+  </React.StrictMode>
 );
