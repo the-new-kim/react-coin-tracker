@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   width: 90vw;
@@ -73,6 +74,9 @@ function Coins() {
 
   return (
     <Container>
+      <Helmet>
+        <title>Cryptos</title>
+      </Helmet>
       <Header>
         <Title>Cryptos</Title>
       </Header>
@@ -80,7 +84,7 @@ function Coins() {
         <Loader>Loading...</Loader>
       ) : (
         <CoinsList>
-          {data?.slice(0, 10).map((coin) => (
+          {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               <Link to={coin.id} state={{ name: coin.name }}>
                 <img

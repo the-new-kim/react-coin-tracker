@@ -1,5 +1,6 @@
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
-import { Link, NavLink, Outlet, useMatch, useParams } from "react-router-dom";
+import { Link, Outlet, useMatch, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 
@@ -165,14 +166,18 @@ function Coin() {
 
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId!],
-    () => fetchCoinTickers(coinId)
+    () => fetchCoinTickers(coinId),
+    {
+      refetchInterval: 60000,
+    }
   );
   const loading = infoLoading || tickersLoading;
 
-  console.log(priceMatch);
-
   return (
     <Container>
+      <Helmet>
+        <title>{infoData?.name}</title>
+      </Helmet>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
@@ -221,7 +226,7 @@ function Coin() {
             </Tab>
           </Tabs>
 
-          <Outlet />
+          <Outlet context={tickersData?.quotes.USD} />
         </>
       )}
     </Container>

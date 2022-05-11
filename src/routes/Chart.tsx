@@ -2,6 +2,11 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import styled from "styled-components";
+
+const Loader = styled.div`
+  text-align: center;
+`;
 
 interface IOhlcv {
   time_open: string;
@@ -18,33 +23,33 @@ function Chart() {
   const { coinId } = useParams();
   const { isLoading, data: ohlcvData } = useQuery<IOhlcv[]>(
     ["ohlcv", coinId!],
-    () => fetchCoinHistory(coinId)
+    () => fetchCoinHistory(coinId),
+    {
+      refetchInterval: 1000 * 60,
+    }
   );
 
   return (
-    <div>
+    <>
       {isLoading ? (
-        "Loading..."
+        <Loader>Loading...</Loader>
       ) : (
         <ApexChart
-          type="line"
+          type="candlestick"
           width="100%"
           series={[
             {
-              name: "high",
-              data: ohlcvData?.map((price) => price.high) ?? [],
-            },
-            {
-              name: "low",
-              data: ohlcvData?.map((price) => price.low) ?? [],
-            },
-            {
-              name: "open",
-              data: ohlcvData?.map((price) => price.open) ?? [],
-            },
-            {
-              name: "close",
-              data: ohlcvData?.map((price) => price.close) ?? [],
+              data:
+                ohlcvData?.map((item) => {
+                  const x = new Date(item.time_close);
+                  const y = [
+                    item.open.toFixed(2),
+                    item.high.toFixed(2),
+                    item.low.toFixed(2),
+                    item.close.toFixed(2),
+                  ];
+                  return { x, y };
+                }) ?? [],
             },
           ]}
           options={{
@@ -58,19 +63,28 @@ function Chart() {
               },
               background: "transparent",
             },
-            grid: { show: true },
-            stroke: {
-              curve: "smooth",
-              width: 4,
-            },
-            yaxis: {
-              show: false,
-            },
             xaxis: {
-              axisBorder: { show: false },
-              axisTicks: { show: false },
-              labels: { show: false },
+              type: "datetime",
             },
+            // grid: { show: true },
+            // stroke: {
+            //   curve: "smooth",
+            //   width: 4,
+            // },
+            yaxis: {
+              show: true,
+            },
+            // xaxis: {
+            //   axisBorder: { show: false },
+            //   axisTicks: { show: false },
+            //   labels: { show: false },
+            //   categories: ohlcvData?.map((time) => {
+            //     const date = new Date(time.time_close);
+            //     return `${date.getFullYear()}/${
+            //       date.getMonth() + 1
+            //     }/${date.getDate()}`;
+            //   }),
+            // },
             tooltip: {
               y: {
                 formatter: (value) => `$${value.toFixed(2)}`,
@@ -79,7 +93,7 @@ function Chart() {
           }}
         />
       )}
-    </div>
+    </>
   );
 }
 
