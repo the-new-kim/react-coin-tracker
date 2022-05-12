@@ -9,9 +9,9 @@ const THEME_COLOR6 = "#BB86FC";
 
 export const lightTheme: DefaultTheme = {
   bgColor: THEME_COLOR4,
-  textColor: THEME_COLOR3,
+  textColor: THEME_COLOR2,
   btnColor: THEME_COLOR5,
-  hoverColor: THEME_COLOR5,
+  hoverColor: THEME_COLOR3,
   activeColor: THEME_COLOR6,
 };
 export const darkTheme: DefaultTheme = {

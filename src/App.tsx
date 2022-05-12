@@ -1,6 +1,9 @@
 import Router from "./Router";
 
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { darkTheme, lightTheme } from "./theme";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkModeAtom } from "./atoms";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -63,6 +66,7 @@ body{
   color: ${(props) => props.theme.textColor};
   font-size: 15px;
   font-weight: 100;
+  transition: color 500ms ease-out, background-color 500ms ease-out;
 }
 h1,h2,h3,h4,h5 {
 	font-weight: 500;
@@ -76,11 +80,30 @@ h4 {font-size: 1em}
 
 `;
 
+const DarkModeBtn = styled.div`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  transition: color 500ms ease-out;
+  :hover {
+    color: ${(props) => props.theme.hoverColor};
+  }
+`;
+
 function App() {
+  const isDarkMode = useRecoilValue(isDarkModeAtom);
+  const setDarkMode = useSetRecoilState(isDarkModeAtom);
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
   return (
     <>
-      <GlobalStyle />
-      <Router />
+      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <Router />
+        <DarkModeBtn onClick={toggleDarkMode}>
+          {isDarkMode ? "light mode" : "dark mode"}
+        </DarkModeBtn>
+      </ThemeProvider>
     </>
   );
 }

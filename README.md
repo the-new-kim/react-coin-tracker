@@ -1,3 +1,10 @@
-# Building a Crypto Tracker App using React
+# React Coin Tracker App
 
-[GitHub Pages](https://the-new-kim.github.io/react-crypto-tracker/)
+## Libraries Used
+
+- `styled-components`
+- `recoil`
+- `react-router-dom`
+- `react-query`
+
+[GitHub Pages](https://the-new-kim.github.io/react-coin-tracker/)

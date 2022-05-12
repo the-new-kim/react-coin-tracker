@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkModeAtom } from "../atoms";
 
 const Container = styled.div`
+  position: relative;
   width: 90vw;
   max-width: 500px;
   margin: 0 auto;
@@ -19,16 +22,24 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 const Title = styled.h1`
+  grid-area: title;
   padding: 30px;
 `;
+
 const CoinsList = styled.ul``;
 const Coin = styled.li`
   background-color: ${(props) => props.theme.btnColor};
   color: ${(props) => props.theme.textColor};
   border-radius: 20px;
   margin-bottom: 10px;
+  transition: background-color 500ms ease-out;
 
   a {
     color: inherit;
@@ -70,6 +81,8 @@ interface ICoin {
 }
 
 function Coins() {
+  const isDarkMode = useRecoilValue(isDarkModeAtom);
+
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
 
   return (

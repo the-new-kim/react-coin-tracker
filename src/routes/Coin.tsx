@@ -35,6 +35,7 @@ const Overview = styled.div`
   background-color: ${(props) => props.theme.btnColor};
   color: ${(props) => props.theme.textColor};
   border-radius: 20px;
+  transition: background-color 500ms ease-out;
 `;
 
 const OverviewItem = styled.div`
@@ -66,6 +67,7 @@ const Tab = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: background-color 500ms ease-out;
 
   a {
     display: flex;
